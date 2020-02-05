@@ -2,6 +2,7 @@ def PyDNS():
     import numpy as np
     from matplotlib import pyplot
     from src import pressure_poisson
+    from src import diff_ops
 
     ##variable declarations
     nx = 41
@@ -24,106 +25,82 @@ def PyDNS():
 
     # initial conditions
     u = np.zeros((ny, nx))
-    un = np.zeros((ny, nx))
+    utemp = np.zeros((ny, 3))
 
     v = np.zeros((ny, nx))
-    vn = np.zeros((ny, nx))
+    vtemp = np.zeros((ny, 3))
 
-    p = np.ones((ny, nx))
-    pn = np.ones((ny, nx))
+    p = np.zeros((ny, nx))
+    ptemp = np.zeros((ny, 3))
 
-    b = np.zeros((ny, nx))
-
-    udiff = 1
-    stepcount = 0
-
-    while udiff > .001:
-        un = u.copy()
-        vn = v.copy()
-
-        p, err = pressure_poisson.solve_new(p, dx, dy, pressure_poisson.build_up_b(rho, dt, dx, dy, u, v))
-
-        u[1:-1, 1:-1] = (un[1:-1, 1:-1] -
-                         un[1:-1, 1:-1] * dt / dx *
-                         (un[1:-1, 1:-1] - un[1:-1, 0:-2]) -
-                         vn[1:-1, 1:-1] * dt / dy *
-                         (un[1:-1, 1:-1] - un[0:-2, 1:-1]) -
-                         dt / (2 * rho * dx) *
-                         (p[1:-1, 2:] - p[1:-1, 0:-2]) +
-                         nu * (dt / dx ** 2 *
-                               (un[1:-1, 2:] - 2 * un[1:-1, 1:-1] + un[1:-1, 0:-2]) +
-                               dt / dy ** 2 *
-                               (un[2:, 1:-1] - 2 * un[1:-1, 1:-1] + un[0:-2, 1:-1])) +
-                         F * dt)
-
-        v[1:-1, 1:-1] = (vn[1:-1, 1:-1] -
-                         un[1:-1, 1:-1] * dt / dx *
-                         (vn[1:-1, 1:-1] - vn[1:-1, 0:-2]) -
-                         vn[1:-1, 1:-1] * dt / dy *
-                         (vn[1:-1, 1:-1] - vn[0:-2, 1:-1]) -
-                         dt / (2 * rho * dy) *
-                         (p[2:, 1:-1] - p[0:-2, 1:-1]) +
-                         nu * (dt / dx ** 2 *
-                               (vn[1:-1, 2:] - 2 * vn[1:-1, 1:-1] + vn[1:-1, 0:-2]) +
-                               dt / dy ** 2 *
-                               (vn[2:, 1:-1] - 2 * vn[1:-1, 1:-1] + vn[0:-2, 1:-1])))
-
-        # Periodic BC u @ x = 2
-        u[1:-1, -1] = (un[1:-1, -1] - un[1:-1, -1] * dt / dx *
-                       (un[1:-1, -1] - un[1:-1, -2]) -
-                       vn[1:-1, -1] * dt / dy *
-                       (un[1:-1, -1] - un[0:-2, -1]) -
-                       dt / (2 * rho * dx) *
-                       (p[1:-1, 0] - p[1:-1, -2]) +
-                       nu * (dt / dx ** 2 *
-                             (un[1:-1, 0] - 2 * un[1:-1, -1] + un[1:-1, -2]) +
-                             dt / dy ** 2 *
-                             (un[2:, -1] - 2 * un[1:-1, -1] + un[0:-2, -1])) + F * dt)
-
-        # Periodic BC u @ x = 0
-        u[1:-1, 0] = (un[1:-1, 0] - un[1:-1, 0] * dt / dx *
-                      (un[1:-1, 0] - un[1:-1, -1]) -
-                      vn[1:-1, 0] * dt / dy *
-                      (un[1:-1, 0] - un[0:-2, 0]) -
-                      dt / (2 * rho * dx) *
-                      (p[1:-1, 1] - p[1:-1, -1]) +
-                      nu * (dt / dx ** 2 *
-                            (un[1:-1, 1] - 2 * un[1:-1, 0] + un[1:-1, -1]) +
-                            dt / dy ** 2 *
-                            (un[2:, 0] - 2 * un[1:-1, 0] + un[0:-2, 0])) + F * dt)
-
-        # Periodic BC v @ x = 2
-        v[1:-1, -1] = (vn[1:-1, -1] - un[1:-1, -1] * dt / dx *
-                       (vn[1:-1, -1] - vn[1:-1, -2]) -
-                       vn[1:-1, -1] * dt / dy *
-                       (vn[1:-1, -1] - vn[0:-2, -1]) -
-                       dt / (2 * rho * dy) *
-                       (p[2:, -1] - p[0:-2, -1]) +
-                       nu * (dt / dx ** 2 *
-                             (vn[1:-1, 0] - 2 * vn[1:-1, -1] + vn[1:-1, -2]) +
-                             dt / dy ** 2 *
-                             (vn[2:, -1] - 2 * vn[1:-1, -1] + vn[0:-2, -1])))
-
-        # Periodic BC v @ x = 0
-        v[1:-1, 0] = (vn[1:-1, 0] - un[1:-1, 0] * dt / dx *
-                      (vn[1:-1, 0] - vn[1:-1, -1]) -
-                      vn[1:-1, 0] * dt / dy *
-                      (vn[1:-1, 0] - vn[0:-2, 0]) -
-                      dt / (2 * rho * dy) *
-                      (p[2:, 0] - p[0:-2, 0]) +
-                      nu * (dt / dx ** 2 *
-                            (vn[1:-1, 1] - 2 * vn[1:-1, 0] + vn[1:-1, -1]) +
-                            dt / dy ** 2 *
-                            (vn[2:, 0] - 2 * vn[1:-1, 0] + vn[0:-2, 0])))
-
-        # Wall BC: u,v = 0 @ y = 0,2
+    for stepcount in range(1, nt + 1):
         u[0, :] = 0
         u[-1, :] = 0
         v[0, :] = 0
         v[-1, :] = 0
 
-        udiff = (np.sum(u) - np.sum(un)) / np.sum(u)
-        stepcount += 1
+        # Step1
+        # do the x-momentum RHS
+        # u rhs: - d(uu)/dx - d(vu)/dy + ν d2(u)
+        uRHS = - diff_ops.ddx(u * u, dx) - diff_ops.ddy(v * u, dy) + nu * diff_ops.laplacian(u, dx, dy)
+        # v rhs: - d(uv)/dx - d(vv)/dy + ν d2(v)
+        vRHS = - diff_ops.ddx(u * v, dx) - diff_ops.ddy(v * v, dy) + nu * diff_ops.laplacian(v, dx, dy)
+
+        # periodic condition at x=lx
+        utemp = np.hstack((u[:, -2:].reshape((ny, 2)), u[:, 0].reshape((ny, 1))))
+        vtemp = np.hstack((v[:, -2:].reshape((ny, 2)), v[:, 0].reshape((ny, 1))))
+        uRHS[:, -1] = (- diff_ops.ddx(utemp * utemp, dx) - diff_ops.ddy(vtemp * utemp, dy) + nu * diff_ops.laplacian(
+            utemp, dx, dy))[:, 1]
+        vRHS[:, -1] = (- diff_ops.ddx(utemp * vtemp, dx) - diff_ops.ddy(vtemp * vtemp, dy) + nu * diff_ops.laplacian(
+            vtemp, dx, dy))[:, 1]
+
+        # periodic condition at x=0
+        utemp = np.hstack((u[:, -1].reshape((ny, 1)), u[:, :2].reshape((ny, 2))))
+        vtemp = np.hstack((v[:, -1].reshape((ny, 1)), v[:, :2].reshape((ny, 2))))
+        uRHS[:, 0] = (- diff_ops.ddx(utemp * utemp, dx) - diff_ops.ddy(vtemp * utemp, dy) + nu * diff_ops.laplacian(
+            utemp, dx, dy))[:, 1]
+        vRHS[:, 0] = (- diff_ops.ddx(utemp * vtemp, dx) - diff_ops.ddy(vtemp * vtemp, dy) + nu * diff_ops.laplacian(
+            vtemp, dx, dy))[:, 1]
+
+        ustar = u + dt * uRHS + F * dt
+        vstar = v + dt * vRHS
+
+        ustar[0, :] = 0
+        ustar[-1, :] = 0
+        vstar[0, :] = 0
+        vstar[-1, :] = 0
+
+        # Step2
+        # next compute the pressure RHS: prhs = div(un)/dt + div( [urhs, vrhs])
+        prhs = rho * diff_ops.div(ustar, vstar, dx, dy) / dt
+
+        # periodic condition at x=lx
+        utemp = np.hstack((ustar[:, -2:].reshape((ny, 2)), ustar[:, 0].reshape((ny, 1))))
+        vtemp = np.hstack((vstar[:, -2:].reshape((ny, 2)), vstar[:, 0].reshape((ny, 1))))
+        prhs[:, -1] = (rho * diff_ops.div(utemp, vtemp, dx, dy) / dt)[:, 1]
+
+        # periodic condition at x=0
+        utemp = np.hstack((ustar[:, -1].reshape((ny, 1)), ustar[:, :2].reshape((ny, 2))))
+        vtemp = np.hstack((vstar[:, -1].reshape((ny, 1)), vstar[:, :2].reshape((ny, 2))))
+        prhs[:, 0] = (rho * diff_ops.div(utemp, vtemp, dx, dy) / dt)[:, 1]
+
+        p, err = pressure_poisson.solve_new(p, dx, dy, prhs)
+
+        # Step3
+        # finally compute the true velocities
+        # u_{n+1} = uh - dt*dpdx
+        dpdx=diff_ops.ddx(p, dx)
+
+        # periodic condition at x=lx
+        ptemp = np.hstack((p[:, -2:].reshape((ny, 2)), p[:, 0].reshape((ny, 1))))
+        dpdx[:, -1] = diff_ops.ddx(ptemp, dx)[:, 1]
+
+        # periodic condition at x=0
+        ptemp = np.hstack((p[:, -1].reshape((ny, 1)), p[:, :2].reshape((ny, 2))))
+        dpdx[:, 0] = diff_ops.ddx(ptemp, dx)[:, 1]
+
+        u = ustar - dt * dpdx
+        v = vstar - dt * diff_ops.ddy(p, dy)
 
         print(stepcount)
 

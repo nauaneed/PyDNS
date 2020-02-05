@@ -1,4 +1,6 @@
 import numpy as np
+
+
 def build_up_b(rho, dt, dx, dy, u, v):
     b = np.zeros_like(u)
     b[1:-1, 1:-1] = (rho * (1 / dt * ((u[1:-1, 2:] - u[1:-1, 0:-2]) / (2 * dx) +
@@ -39,11 +41,12 @@ def solve(p, rho, dt, dx, dy, u, v, nit):
                          (2 * (dx ** 2 + dy ** 2)) -
                          dx ** 2 * dy ** 2 / (2 * (dx ** 2 + dy ** 2)) * b[1:-1, 1:-1])
 
-        p=enforce_bc_channel(p,pn,dx,dy,b)
+        p = enforce_bc_channel(p, pn, dx, dy, b)
 
     return p
 
-def enforce_bc_channel(p,pn,dx,dy,b):
+
+def enforce_bc_channel(p, pn, dx, dy, b):
     # Periodic BC Pressure @ x = 2
     p[1:-1, -1] = (((pn[1:-1, 0] + pn[1:-1, -2]) * dy ** 2 +
                     (pn[2:, -1] + pn[0:-2, -1]) * dx ** 2) /
@@ -81,4 +84,3 @@ def solve_new(p, dx, dy, b):
         it += 1
 
     return p, err
-
