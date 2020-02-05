@@ -1,19 +1,20 @@
 def PyDNS():
-    import numpy
+    import numpy as np
     from matplotlib import pyplot
     from src import pressure_poisson
 
     ##variable declarations
     nx = 41
     ny = 41
-    nt = 10
     nit = 50
-    c = 1
-    dx = 2 / (nx - 1)
-    dy = 2 / (ny - 1)
-    x = numpy.linspace(0, 2, nx)
-    y = numpy.linspace(0, 2, ny)
-    X, Y = numpy.meshgrid(x, y)
+    lx = 2
+    ly = 2
+    dx = lx / (nx - 1)
+    dy = ly / (ny - 1)
+    x = np.linspace(0, 2, nx)
+    y = np.linspace(0, 2, ny)
+    xx, yy = np.meshgrid(x, y)
+    nt = 499
 
     ##physical variables
     rho = 1
@@ -22,16 +23,16 @@ def PyDNS():
     dt = .01
 
     # initial conditions
-    u = numpy.zeros((ny, nx))
-    un = numpy.zeros((ny, nx))
+    u = np.zeros((ny, nx))
+    un = np.zeros((ny, nx))
 
-    v = numpy.zeros((ny, nx))
-    vn = numpy.zeros((ny, nx))
+    v = np.zeros((ny, nx))
+    vn = np.zeros((ny, nx))
 
-    p = numpy.ones((ny, nx))
-    pn = numpy.ones((ny, nx))
+    p = np.ones((ny, nx))
+    pn = np.ones((ny, nx))
 
-    b = numpy.zeros((ny, nx))
+    b = np.zeros((ny, nx))
 
     udiff = 1
     stepcount = 0
@@ -40,7 +41,7 @@ def PyDNS():
         un = u.copy()
         vn = v.copy()
 
-        p = pressure_poisson.solve(p, rho, dt, dx, dy, u, v, nit)
+        p, err = pressure_poisson.solve_new(p, dx, dy, pressure_poisson.build_up_b(rho, dt, dx, dy, u, v))
 
         u[1:-1, 1:-1] = (un[1:-1, 1:-1] -
                          un[1:-1, 1:-1] * dt / dx *
@@ -121,18 +122,19 @@ def PyDNS():
         v[0, :] = 0
         v[-1, :] = 0
 
-        udiff = (numpy.sum(u) - numpy.sum(un)) / numpy.sum(u)
+        udiff = (np.sum(u) - np.sum(un)) / np.sum(u)
         stepcount += 1
 
         print(stepcount)
 
     fig = pyplot.figure(figsize=(11, 7), dpi=100)
-    pyplot.quiver(X[::3, ::3], Y[::3, ::3], u[::3, ::3], v[::3, ::3])
+    pyplot.quiver(xx[::3, ::3], yy[::3, ::3], u[::3, ::3], v[::3, ::3])
 
     fig = pyplot.figure(figsize=(11, 7), dpi=100)
-    pyplot.quiver(X, Y, u, v)
+    pyplot.quiver(xx, yy, u, v)
 
     pyplot.show()
+
 
 if __name__ == "__main__":
     PyDNS()
