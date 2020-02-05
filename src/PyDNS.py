@@ -3,6 +3,7 @@ def PyDNS():
     from matplotlib import pyplot
     from src import pressure_poisson
     from src import diff_ops
+    from src import ip_op
 
     ##variable declarations
     nx = 41
@@ -15,7 +16,8 @@ def PyDNS():
     x = np.linspace(0, 2, nx)
     y = np.linspace(0, 2, ny)
     xx, yy = np.meshgrid(x, y)
-    nt = 499
+    nt = 500
+    saveth_iter=25
 
     ##physical variables
     rho = 1
@@ -32,6 +34,8 @@ def PyDNS():
 
     p = np.zeros((ny, nx))
     ptemp = np.zeros((ny, 3))
+
+    ip_op.write_szl_2D(xx, yy, p, u, v, 0, 0)
 
     for stepcount in range(1, nt + 1):
         u[0, :] = 0
@@ -102,6 +106,9 @@ def PyDNS():
         u = ustar - dt * dpdx
         v = vstar - dt * diff_ops.ddy(p, dy)
 
+        if np.mod(stepcount, saveth_iter) == 0:
+            ip_op.write_szl_2D(xx, yy, p, u, v, stepcount*dt, int(stepcount / saveth_iter))
+
         print(stepcount)
 
     fig = pyplot.figure(figsize=(11, 7), dpi=100)
@@ -114,4 +121,9 @@ def PyDNS():
 
 
 if __name__ == "__main__":
+    import os
+
+    if not os.path.exists('data'):
+        os.makedirs('data')
+
     PyDNS()

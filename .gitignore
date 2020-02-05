@@ -4,3 +4,6 @@ CFDPythonCourse/lessons/.ipynb_checkpoints
 .DS_Store
 src/__pycache__
 
+# tecplot library
+tecio/*.so
+tecio/__pycache__
