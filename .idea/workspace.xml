@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5988ca98-b665-41da-a57d-f7ef0f80da0f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PyDNS.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/PyDNS.py" afterDir="false" />
     </list>
@@ -99,22 +98,22 @@
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
     <state x="743" y="282" width="424" height="491" key="FileChooserDialogImpl/0.0.1920.1048@0.0.1920.1048" timestamp="1580887366064" />
-    <state width="1899" height="340" key="GridCell.Tab.0.bottom" timestamp="1580928790186">
+    <state width="1899" height="275" key="GridCell.Tab.0.bottom" timestamp="1580931021377">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="1899" height="340" key="GridCell.Tab.0.bottom/0.0.1920.1048@0.0.1920.1048" timestamp="1580928790186" />
-    <state width="1899" height="340" key="GridCell.Tab.0.center" timestamp="1580928790185">
+    <state width="1899" height="275" key="GridCell.Tab.0.bottom/0.0.1920.1048@0.0.1920.1048" timestamp="1580931021377" />
+    <state width="1899" height="275" key="GridCell.Tab.0.center" timestamp="1580931021377">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="1899" height="340" key="GridCell.Tab.0.center/0.0.1920.1048@0.0.1920.1048" timestamp="1580928790185" />
-    <state width="1899" height="340" key="GridCell.Tab.0.left" timestamp="1580928790185">
+    <state width="1899" height="275" key="GridCell.Tab.0.center/0.0.1920.1048@0.0.1920.1048" timestamp="1580931021377" />
+    <state width="1899" height="275" key="GridCell.Tab.0.left" timestamp="1580931021376">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="1899" height="340" key="GridCell.Tab.0.left/0.0.1920.1048@0.0.1920.1048" timestamp="1580928790185" />
-    <state width="1899" height="340" key="GridCell.Tab.0.right" timestamp="1580928790185">
+    <state width="1899" height="275" key="GridCell.Tab.0.left/0.0.1920.1048@0.0.1920.1048" timestamp="1580931021376" />
+    <state width="1899" height="275" key="GridCell.Tab.0.right" timestamp="1580931021377">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="1899" height="340" key="GridCell.Tab.0.right/0.0.1920.1048@0.0.1920.1048" timestamp="1580928790185" />
+    <state width="1899" height="275" key="GridCell.Tab.0.right/0.0.1920.1048@0.0.1920.1048" timestamp="1580931021377" />
     <state width="1899" height="340" key="GridCell.Tab.1.bottom" timestamp="1580928790187">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
@@ -155,8 +154,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/PyDNS.py</url>
-          <line>68</line>
-          <option name="timeStamp" value="19" />
+          <line>126</line>
+          <option name="timeStamp" value="20" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

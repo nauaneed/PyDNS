@@ -17,7 +17,7 @@ def PyDNS():
     y = np.linspace(0, 2, ny)
     xx, yy = np.meshgrid(x, y)
     nt = 500
-    saveth_iter=25
+    saveth_iter = 25
 
     ##physical variables
     rho = 1
@@ -34,6 +34,8 @@ def PyDNS():
 
     p = np.zeros((ny, nx))
     ptemp = np.zeros((ny, 3))
+    dpdx = np.zeros((ny, nx))
+    dpdy = np.zeros((ny, nx))
 
     ip_op.write_szl_2D(xx, yy, p, u, v, 0, 0)
 
@@ -46,9 +48,9 @@ def PyDNS():
         # Step1
         # do the x-momentum RHS
         # u rhs: - d(uu)/dx - d(vu)/dy + ν d2(u)
-        uRHS = - diff_ops.ddx(u * u, dx) - diff_ops.ddy(v * u, dy) + nu * diff_ops.laplacian(u, dx, dy)
+        uRHS = - diff_ops.ddx(u * u, dx) - diff_ops.ddy(v * u, dy) + nu * diff_ops.laplacian(u, dx, dy) - dpdx
         # v rhs: - d(uv)/dx - d(vv)/dy + ν d2(v)
-        vRHS = - diff_ops.ddx(u * v, dx) - diff_ops.ddy(v * v, dy) + nu * diff_ops.laplacian(v, dx, dy)
+        vRHS = - diff_ops.ddx(u * v, dx) - diff_ops.ddy(v * v, dy) + nu * diff_ops.laplacian(v, dx, dy) - dpdx
 
         # periodic condition at x=lx
         utemp = np.hstack((u[:, -2:].reshape((ny, 2)), u[:, 0].reshape((ny, 1))))
@@ -75,25 +77,29 @@ def PyDNS():
         vstar[-1, :] = 0
 
         # Step2
+        ustarstar = ustar + dpdx * dt
+        vstarstar = vstar + dpdy * dt
+
+        # Step3
         # next compute the pressure RHS: prhs = div(un)/dt + div( [urhs, vrhs])
-        prhs = rho * diff_ops.div(ustar, vstar, dx, dy) / dt
+        prhs = rho * diff_ops.div(ustarstar, vstarstar, dx, dy) / dt
 
         # periodic condition at x=lx
-        utemp = np.hstack((ustar[:, -2:].reshape((ny, 2)), ustar[:, 0].reshape((ny, 1))))
-        vtemp = np.hstack((vstar[:, -2:].reshape((ny, 2)), vstar[:, 0].reshape((ny, 1))))
+        utemp = np.hstack((ustarstar[:, -2:].reshape((ny, 2)), ustarstar[:, 0].reshape((ny, 1))))
+        vtemp = np.hstack((vstarstar[:, -2:].reshape((ny, 2)), vstarstar[:, 0].reshape((ny, 1))))
         prhs[:, -1] = (rho * diff_ops.div(utemp, vtemp, dx, dy) / dt)[:, 1]
 
         # periodic condition at x=0
-        utemp = np.hstack((ustar[:, -1].reshape((ny, 1)), ustar[:, :2].reshape((ny, 2))))
-        vtemp = np.hstack((vstar[:, -1].reshape((ny, 1)), vstar[:, :2].reshape((ny, 2))))
+        utemp = np.hstack((ustarstar[:, -1].reshape((ny, 1)), ustarstar[:, :2].reshape((ny, 2))))
+        vtemp = np.hstack((vstarstar[:, -1].reshape((ny, 1)), vstarstar[:, :2].reshape((ny, 2))))
         prhs[:, 0] = (rho * diff_ops.div(utemp, vtemp, dx, dy) / dt)[:, 1]
 
         p, err = pressure_poisson.solve_new(p, dx, dy, prhs)
 
-        # Step3
+        # Step4
         # finally compute the true velocities
         # u_{n+1} = uh - dt*dpdx
-        dpdx=diff_ops.ddx(p, dx)
+        dpdx = diff_ops.ddx(p, dx)
 
         # periodic condition at x=lx
         ptemp = np.hstack((p[:, -2:].reshape((ny, 2)), p[:, 0].reshape((ny, 1))))
@@ -103,11 +109,13 @@ def PyDNS():
         ptemp = np.hstack((p[:, -1].reshape((ny, 1)), p[:, :2].reshape((ny, 2))))
         dpdx[:, 0] = diff_ops.ddx(ptemp, dx)[:, 1]
 
-        u = ustar - dt * dpdx
-        v = vstar - dt * diff_ops.ddy(p, dy)
+        dpdy = diff_ops.ddx(p, dy)
+
+        u = ustarstar - dt * dpdx
+        v = vstarstar - dt * dpdy
 
         if np.mod(stepcount, saveth_iter) == 0:
-            ip_op.write_szl_2D(xx, yy, p, u, v, stepcount*dt, int(stepcount / saveth_iter))
+            ip_op.write_szl_2D(xx, yy, p, u, v, stepcount * dt, int(stepcount / saveth_iter))
 
         print(stepcount)
 
