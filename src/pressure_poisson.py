@@ -1,5 +1,5 @@
 import numpy as np
-
+from scipy.fftpack import dst, dct
 
 def build_up_b(rho, dt, dx, dy, u, v):
     b = np.zeros_like(u)
@@ -66,11 +66,11 @@ def enforce_bc_channel(p, pn, dx, dy, b):
 
 
 def solve_new(p, dx, dy, b):
-    pn = np.empty_like(p)
+
     it = 0
     err = 1e5
     tol = 1e-3
-    maxit = 50
+    maxit = 5000
     while it < maxit and err > tol:
         pn = p.copy()
         p[1:-1, 1:-1] = (((pn[1:-1, 2:] + pn[1:-1, 0:-2]) * dy ** 2 +
@@ -84,3 +84,25 @@ def solve_new(p, dx, dy, b):
         it += 1
 
     return p, err
+
+
+def solve_spectral(p, dx, dy, prhs, nx, ny, lx, ly):
+
+    prhsk = dct(np.fft.fft(prhs, axis=1), type=1, axis=0)
+
+    nx_sp = nx
+    ny_sp = ny
+
+    kx = np.array([(2 * np.pi * i / lx) for i in range(0, (int(nx_sp / 2) - 1))])
+    kx = np.append(kx, np.array([(2 * np.pi * (nx_sp - i) / lx) for i in range(int(nx_sp / 2) - 1, nx_sp)]))
+    ky = np.array([(np.pi * (i + 1) / ly) for i in range(0, ny_sp)])
+    KX, KY = np.meshgrid(kx, ky)
+    K = KX ** 2 + KY ** 2
+
+    pk = prhsk / (-K)
+
+    p[:, :] = np.fft.ifft(dct(pk, type=1, axis=0) / (2 * (ny_sp + 1)), axis=1)
+
+    return p
+
+

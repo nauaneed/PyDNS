@@ -4,6 +4,8 @@
     <list default="true" id="5988ca98-b665-41da-a57d-f7ef0f80da0f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PyDNS.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/PyDNS.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/diff_ops.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/diff_ops.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pressure_poisson.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pressure_poisson.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,46 +92,50 @@
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
     <state x="418" y="182" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1048@0.0.1920.1048" timestamp="1580921202749" />
-    <state x="1203" y="276" width="717" height="603" key="#xdebugger.evaluate" timestamp="1580926421782">
+    <state x="1176" y="445" width="717" height="603" key="#xdebugger.evaluate" timestamp="1580975340672">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state x="1203" y="276" width="717" height="603" key="#xdebugger.evaluate/0.0.1920.1048@0.0.1920.1048" timestamp="1580926421782" />
+    <state x="1176" y="445" width="717" height="603" key="#xdebugger.evaluate/0.0.1920.1048@0.0.1920.1048" timestamp="1580975340672" />
+    <state width="1431" height="466" key="DebuggerActiveHint" timestamp="1580968149352">
+      <screen x="0" y="0" width="1920" height="1048" />
+    </state>
+    <state width="1431" height="466" key="DebuggerActiveHint/0.0.1920.1048@0.0.1920.1048" timestamp="1580968149352" />
     <state x="743" y="282" width="424" height="491" key="FileChooserDialogImpl" timestamp="1580887366064">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
     <state x="743" y="282" width="424" height="491" key="FileChooserDialogImpl/0.0.1920.1048@0.0.1920.1048" timestamp="1580887366064" />
-    <state width="1899" height="275" key="GridCell.Tab.0.bottom" timestamp="1580931021377">
+    <state width="1899" height="275" key="GridCell.Tab.0.bottom" timestamp="1580987301811">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="1899" height="275" key="GridCell.Tab.0.bottom/0.0.1920.1048@0.0.1920.1048" timestamp="1580931021377" />
-    <state width="1899" height="275" key="GridCell.Tab.0.center" timestamp="1580931021377">
+    <state width="1899" height="275" key="GridCell.Tab.0.bottom/0.0.1920.1048@0.0.1920.1048" timestamp="1580987301811" />
+    <state width="1899" height="275" key="GridCell.Tab.0.center" timestamp="1580987301811">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="1899" height="275" key="GridCell.Tab.0.center/0.0.1920.1048@0.0.1920.1048" timestamp="1580931021377" />
-    <state width="1899" height="275" key="GridCell.Tab.0.left" timestamp="1580931021376">
+    <state width="1899" height="275" key="GridCell.Tab.0.center/0.0.1920.1048@0.0.1920.1048" timestamp="1580987301811" />
+    <state width="1899" height="275" key="GridCell.Tab.0.left" timestamp="1580987301810">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="1899" height="275" key="GridCell.Tab.0.left/0.0.1920.1048@0.0.1920.1048" timestamp="1580931021376" />
-    <state width="1899" height="275" key="GridCell.Tab.0.right" timestamp="1580931021377">
+    <state width="1899" height="275" key="GridCell.Tab.0.left/0.0.1920.1048@0.0.1920.1048" timestamp="1580987301810" />
+    <state width="1899" height="275" key="GridCell.Tab.0.right" timestamp="1580987301811">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="1899" height="275" key="GridCell.Tab.0.right/0.0.1920.1048@0.0.1920.1048" timestamp="1580931021377" />
-    <state width="1899" height="340" key="GridCell.Tab.1.bottom" timestamp="1580928790187">
+    <state width="1899" height="275" key="GridCell.Tab.0.right/0.0.1920.1048@0.0.1920.1048" timestamp="1580987301811" />
+    <state width="1899" height="340" key="GridCell.Tab.1.bottom" timestamp="1580979007487">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="1899" height="340" key="GridCell.Tab.1.bottom/0.0.1920.1048@0.0.1920.1048" timestamp="1580928790187" />
-    <state width="1899" height="340" key="GridCell.Tab.1.center" timestamp="1580928790186">
+    <state width="1899" height="340" key="GridCell.Tab.1.bottom/0.0.1920.1048@0.0.1920.1048" timestamp="1580979007487" />
+    <state width="1899" height="340" key="GridCell.Tab.1.center" timestamp="1580979007487">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="1899" height="340" key="GridCell.Tab.1.center/0.0.1920.1048@0.0.1920.1048" timestamp="1580928790186" />
-    <state width="1899" height="340" key="GridCell.Tab.1.left" timestamp="1580928790186">
+    <state width="1899" height="340" key="GridCell.Tab.1.center/0.0.1920.1048@0.0.1920.1048" timestamp="1580979007487" />
+    <state width="1899" height="340" key="GridCell.Tab.1.left" timestamp="1580979007487">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="1899" height="340" key="GridCell.Tab.1.left/0.0.1920.1048@0.0.1920.1048" timestamp="1580928790186" />
-    <state width="1899" height="340" key="GridCell.Tab.1.right" timestamp="1580928790186">
+    <state width="1899" height="340" key="GridCell.Tab.1.left/0.0.1920.1048@0.0.1920.1048" timestamp="1580979007487" />
+    <state width="1899" height="340" key="GridCell.Tab.1.right" timestamp="1580979007487">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="1899" height="340" key="GridCell.Tab.1.right/0.0.1920.1048@0.0.1920.1048" timestamp="1580928790186" />
+    <state width="1899" height="340" key="GridCell.Tab.1.right/0.0.1920.1048@0.0.1920.1048" timestamp="1580979007487" />
     <state x="464" y="159" width="992" height="737" key="SettingsEditor" timestamp="1580921169186">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
@@ -138,6 +144,10 @@
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
     <state x="639" y="351" key="com.intellij.ide.util.TipDialog/0.0.1920.1048@0.0.1920.1048" timestamp="1580927796190" />
+    <state x="742" y="261" width="425" height="533" key="com.intellij.openapi.vcs.changes.SpecificFilesViewDialog" timestamp="1580977540877">
+      <screen x="0" y="0" width="1920" height="1048" />
+    </state>
+    <state x="742" y="261" width="425" height="533" key="com.intellij.openapi.vcs.changes.SpecificFilesViewDialog/0.0.1920.1048@0.0.1920.1048" timestamp="1580977540877" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -148,13 +158,8 @@
           <option name="timeStamp" value="15" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/diff_ops.py</url>
-          <line>3</line>
-          <option name="timeStamp" value="18" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/PyDNS.py</url>
-          <line>126</line>
+          <line>155</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
       </breakpoints>
