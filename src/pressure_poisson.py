@@ -86,18 +86,11 @@ def solve_new(p, dx, dy, b):
     return p, err
 
 
-def solve_spectral(p, dx, dy, prhs, nx, ny, lx, ly):
+def solve_spectral(nx_sp, ny_sp, K, prhs):
+
+    p=np.zeros_like(prhs)
 
     prhsk = dct(np.fft.fft(prhs, axis=1), type=1, axis=0)
-
-    nx_sp = nx
-    ny_sp = ny
-
-    kx = np.array([(2 * np.pi * i / lx) for i in range(0, (int(nx_sp / 2) - 1))])
-    kx = np.append(kx, np.array([(2 * np.pi * (nx_sp - i) / lx) for i in range(int(nx_sp / 2) - 1, nx_sp)]))
-    ky = np.array([(np.pi * (i + 1) / ly) for i in range(0, ny_sp)])
-    KX, KY = np.meshgrid(kx, ky)
-    K = KX ** 2 + KY ** 2
 
     pk = prhsk / (-K)
 

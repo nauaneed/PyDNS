@@ -52,6 +52,16 @@ def PyDNS():
                 epsilon[j, i] = 1
 
 
+    ## pressure_poisson
+    nx_sp = nx
+    ny_sp = ny
+
+    kx = np.array([(2 * np.pi * i / lx) for i in range(0, (int(nx_sp / 2) - 1))])
+    kx = np.append(kx, np.array([(2 * np.pi * (nx_sp - i) / lx) for i in range(int(nx_sp / 2) - 1, nx_sp)]))
+    ky = np.array([(np.pi * (i + 1) / ly) for i in range(0, ny_sp)])
+    KX, KY = np.meshgrid(kx, ky)
+    K = KX ** 2 + KY ** 2
+
 
     ip_op.write_szl_2D(xx, yy, p, u, v, 0, 0)
 
@@ -123,7 +133,7 @@ def PyDNS():
 
         #p, err = pressure_poisson.solve_new(p, dx, dy, prhs)
 
-        p = pressure_poisson.solve_spectral(p, dx, dy, prhs, nx, ny, lx, ly)
+        p = pressure_poisson.solve_spectral(nx_sp, ny_sp, K, prhs)
 
         # Step4
         # finally compute the true velocities
