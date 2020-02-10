@@ -170,6 +170,24 @@ def PyDNS():
 
 if __name__ == "__main__":
     import os
+    import sys
+    from pathlib import Path
+    from urllib import request
+
+    # To download tecio library module
+    lib_folder = Path("tecio")
+    if os.name == 'nt':
+        dll_path = lib_folder / 'libtecio.dll'
+        if not dll_path.is_file():
+            url = 'https://raw.githubusercontent.com/blacksong/pytecio/master/2017r3_tecio.dll'
+
+    else:
+        dll_path = lib_folder / 'libtecio.so'
+        if not dll_path.is_file():
+            url = 'https://raw.githubusercontent.com/blacksong/pytecio/master/2017r2_tecio.so'
+    print('Downloading dll from github:', url)
+    request.urlretrieve(url, dll_path)
+
 
     if not os.path.exists('data'):
         os.makedirs('data')

@@ -6,7 +6,7 @@ import sys
 import os
 
 if os.name == 'nt':
-    tecio = ctypes.cdll.LoadLibrary(r"tecio/tecio.dll")
+    tecio = ctypes.cdll.LoadLibrary(r"tecio/libtecio.dll")
 else:
     tecio = ctypes.cdll.LoadLibrary(r"tecio/libtecio.so")
 
