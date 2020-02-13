@@ -34,8 +34,6 @@ def PyDNS():
     dpdx = np.zeros((ny, nx))
     dpdy = np.zeros((ny, nx))
     epsilon = np.zeros((ny, nx))
-    u_desired = np.zeros((ny, nx))
-    v_desired = np.zeros((ny, nx))
     uRHS_conv_diff_p = np.zeros((ny, nx))
     uRHS_conv_diff_pp = np.zeros((ny, nx))
     vRHS_conv_diff_p = np.zeros((ny, nx))
@@ -68,7 +66,7 @@ def PyDNS():
 
     for stepcount in range(1, 3):
         u, v, dpdx, dpdy, uRHS_conv_diff, vRHS_conv_diff = integrate.rk3(u, v, nx, ny, nu, dx, dy, dt, dpdx, dpdy,
-                                                                         epsilon, F, u_desired, v_desired, theta, r, R,
+                                                                         epsilon, F, theta, r, R,
                                                                          rho, stepcount, saveth_iter, x, y, xx, yy,
                                                                          nx_sp, ny_sp, K)
 

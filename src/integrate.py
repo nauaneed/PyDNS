@@ -2,8 +2,10 @@ import numpy as np
 from src import derive, projection_method, ibm, ip_op
 
 
-def rk3(u, v, nx, ny, nu, dx, dy, dt, dpdx, dpdy, epsilon, F, u_desired, v_desired, theta, r, R, rho, stepcount,
+def rk3(u, v, nx, ny, nu, dx, dy, dt, dpdx, dpdy, epsilon, F, theta, r, R, rho, stepcount,
         saveth_iter, x, y, xx, yy, nx_sp, ny_sp, K):
+
+
     u[0, :] = 0
     u[-1, :] = 0
     v[0, :] = 0
