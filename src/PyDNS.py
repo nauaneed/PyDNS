@@ -1,7 +1,7 @@
 def PyDNS():
     import numpy as np
     from matplotlib import pyplot
-    from src import pressure_poisson, integrate
+    from src import pressure_poisson, integrate, projection_method
     from src import derive
     from src import ip_op
     from scipy import interpolate
@@ -16,8 +16,8 @@ def PyDNS():
     x = np.linspace(0, lx, nx)
     y = np.linspace(0, ly, ny)
     xx, yy = np.meshgrid(x, y)
-    nt = 1000000
-    saveth_iter = 5000
+    nt = 300
+    saveth_iter = 20
 
     ##physical variables
     rho = 1
@@ -82,118 +82,42 @@ def PyDNS():
         vRHS_conv_diff_p = vRHS_conv_diff.copy()
 
     for stepcount in range(3, nt + 1):
-        u[0, :] = 0
-        u[-1, :] = 0
-        v[0, :] = 0
-        v[-1, :] = 0
 
-        # Step1
-        # do the x-momentum RHS
-        # u rhs: - d(uu)/dx - d(vu)/dy + ν d2(u)
-        uRHS_conv_diff = - u * derive.ddx_bwd(u, dx) - v * derive.ddy_bwd(u, dy) + nu * derive.laplacian(u, dx,
-                                                                                                         dy)
-        # v rhs: - d(uv)/dx - d(vv)/dy + ν d2(v)
-        vRHS_conv_diff = - u * derive.ddx_bwd(v, dx) - v * derive.ddy_bwd(v, dy) + nu * derive.laplacian(v, dx,
-                                                                                                         dy)
-
-        # periodic condition at x=lx
-        utemp = np.hstack((u[:, -2:].reshape((ny, 2)), u[:, 0].reshape((ny, 1))))
-        vtemp = np.hstack((v[:, -2:].reshape((ny, 2)), v[:, 0].reshape((ny, 1))))
-        uRHS_conv_diff[:, -1] = (- u * derive.ddx_bwd(u, dx) - v * derive.ddy_bwd(u, dy) + nu * derive.laplacian(
-            u, dx, dy))[:, 1]
-        vRHS_conv_diff[:, -1] = (- u * derive.ddx_bwd(v, dx) - v * derive.ddy_bwd(v, dy) + nu * derive.laplacian(
-            v, dx, dy))[:, 1]
-        # periodic condition at x=0
-        utemp = np.hstack((u[:, -1].reshape((ny, 1)), u[:, :2].reshape((ny, 2))))
-        vtemp = np.hstack((v[:, -1].reshape((ny, 1)), v[:, :2].reshape((ny, 2))))
-        uRHS_conv_diff[:, 0] = (- u * derive.ddx_bwd(u, dx) - v * derive.ddy_bwd(u, dy)
-                                + nu * derive.laplacian(u, dx, dy) - dpdx)[:, 1]
-        vRHS_conv_diff[:, 0] = (- u * derive.ddx_bwd(v, dx) - v * derive.ddy_bwd(v, dy)
-                                + nu * derive.laplacian(v, dx, dy) - dpdy)[:, 1]
-
-        uRHS = (23 * uRHS_conv_diff - 16 * uRHS_conv_diff_p + 5 * uRHS_conv_diff_pp) / 12 - dpdx
-
-        vRHS = (23 * vRHS_conv_diff - 16 * vRHS_conv_diff_p + 5 * vRHS_conv_diff_pp) / 12 - dpdy
-
-        interpolate_u = interpolate.interp2d(x, y, u + uRHS * dt + F * dt, kind='cubic')
-        interpolate_v = interpolate.interp2d(x, y, v + vRHS * dt, kind='cubic')
-
-        for i in range(nx):
-            for j in range(ny):
-                if epsilon[j, i] != 0:
-                    u_desired[j, i] = -np.sin(2 * np.pi * (r[j, i] ** 2) / (2 * (R ** 2))) * interpolate_u(
-                        xx[j, i] + (R - r[j, i]) * np.cos(theta[j, i]),
-                        yy[j, i] + (R - r[j, i]) * np.sin(theta[j, i]))
-                    v_desired[j, i] = -np.sin(2 * np.pi * (r[j, i] ** 2) / (2 * (R ** 2))) * interpolate_v(
-                        xx[j, i] + (R - r[j, i]) * np.cos(theta[j, i]),
-                        yy[j, i] + (R - r[j, i]) * np.sin(theta[j, i]))
-
-        ibm_forcing_u = epsilon * (-uRHS - F + (u_desired - u) / dt)
-        ibm_forcing_v = epsilon * (-vRHS + (v_desired - v) / dt)
-
-        ustar = u + dt * uRHS + F * dt + ibm_forcing_u * dt
-        vstar = v + dt * vRHS + ibm_forcing_v * dt
-
-        ustar[0, :] = 0
-        ustar[-1, :] = 0
-        vstar[0, :] = 0
-        vstar[-1, :] = 0
+        ustar, vstar, uRHS_conv_diff, vRHS_conv_diff = projection_method.step1(u, v, nx, ny, nu, x, y, xx, yy, dx, dy,
+                                                                               dt, epsilon, F, R, theta, r,
+                                                                               uRHS_conv_diff_p, uRHS_conv_diff_pp,
+                                                                               vRHS_conv_diff_p, vRHS_conv_diff_pp,
+                                                                               dpdx, dpdy)
 
         # Step2
-        ustarstar = ustar + dpdx * dt
-        vstarstar = vstar + dpdy * dt
+        ustarstar, vstarstar=projection_method.step2(ustar, vstar, dpdx, dpdy, dt)
 
         # Step3
-        # next compute the pressure RHS: prhs = div(un)/dt + div( [urhs, vrhs])
-        prhs = rho * derive.div((1 - epsilon) * ustarstar, (1 - epsilon) * vstarstar, dx, dy) / dt
-
-        # periodic condition at x=lx
-        utemp = np.hstack((ustarstar[:, -2:].reshape((ny, 2)), ustarstar[:, 0].reshape((ny, 1))))
-        vtemp = np.hstack((vstarstar[:, -2:].reshape((ny, 2)), vstarstar[:, 0].reshape((ny, 1))))
-        prhs[:, -1] = (rho * derive.div(utemp, vtemp, dx, dy) / dt)[:, 1]
-
-        # periodic condition at x=0
-        utemp = np.hstack((ustarstar[:, -1].reshape((ny, 1)), ustarstar[:, :2].reshape((ny, 2))))
-        vtemp = np.hstack((vstarstar[:, -1].reshape((ny, 1)), vstarstar[:, :2].reshape((ny, 2))))
-        prhs[:, 0] = (rho * derive.div(utemp, vtemp, dx, dy) / dt)[:, 1]
-
-        # p, err = pressure_poisson.solve_new(p, dx, dy, prhs)
-
-        p = pressure_poisson.solve_spectral(nx_sp, ny_sp, K, prhs)
+        p=projection_method.step3(ustarstar, vstarstar, rho, epsilon, dx, dy, nx, ny, nx_sp, ny_sp, K, dt)
 
         # Step4
-        # finally compute the true velocities
-        # u_{n+1} = uh - dt*dpdx
-        dpdx = derive.ddx(p, dx)
-
-        # periodic condition at x=lx
-        ptemp = np.hstack((p[:, -2:].reshape((ny, 2)), p[:, 0].reshape((ny, 1))))
-        dpdx[:, -1] = derive.ddx(ptemp, dx)[:, 1]
-
-        # periodic condition at x=0
-        ptemp = np.hstack((p[:, -1].reshape((ny, 1)), p[:, :2].reshape((ny, 2))))
-        dpdx[:, 0] = derive.ddx(ptemp, dx)[:, 1]
-
-        dpdy = derive.ddy(p, dy)
-
-        u = ustarstar - dt * dpdx
-        v = vstarstar - dt * dpdy
+        u, v, dpdx, dpdy=projection_method.step4(ustarstar, vstarstar, p, dx, dy, nx, ny, dt)
 
         if np.mod(stepcount, saveth_iter) == 0:
             ip_op.write_szl_2D(xx, yy, p, u, v, stepcount * dt, int(stepcount / saveth_iter))
 
         print(stepcount)
 
+        uRHS_conv_diff_pp = uRHS_conv_diff_p.copy()
+        vRHS_conv_diff_pp = vRHS_conv_diff_p.copy()
 
+        uRHS_conv_diff_p = uRHS_conv_diff.copy()
+        vRHS_conv_diff_p = vRHS_conv_diff.copy()
+
+        '''
         fig = pyplot.figure(figsize=(11, 7), dpi=100)
         pyplot.quiver(xx[::3, ::3], yy[::3, ::3], u[::3, ::3], v[::3, ::3])
-        '''
+        
         fig = pyplot.figure(figsize=(11, 7), dpi=100)
         pyplot.quiver(xx, yy, u, v)
-        '''
+        
         pyplot.show()
-
-
+        '''
 
 if __name__ == "__main__":
     import os

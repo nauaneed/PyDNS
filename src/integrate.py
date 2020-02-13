@@ -1,6 +1,6 @@
 import numpy as np
 from src import pressure_poisson
-from src import derive
+from src import derive, projection_method
 from src import ip_op
 from scipy import interpolate
 
@@ -139,44 +139,13 @@ def rk3(u, v, nx, ny, nu, dx, dy, dt, dpdx, dpdy, epsilon, F, u_desired, v_desir
     vstar[-1, :] = 0
 
     # Step2
-    ustarstar = ustar + dpdx * dt
-    vstarstar = vstar + dpdy * dt
+    ustarstar, vstarstar = projection_method.step2(ustar, vstar, dpdx, dpdy, dt)
 
     # Step3
-    # next compute the pressure RHS: prhs = div(un)/dt + div( [urhs, vrhs])
-    prhs = rho * derive.div((1 - epsilon) * ustarstar, (1 - epsilon) * vstarstar, dx, dy) / dt
-
-    # periodic condition at x=lx
-    utemp = np.hstack((ustarstar[:, -2:].reshape((ny, 2)), ustarstar[:, 0].reshape((ny, 1))))
-    vtemp = np.hstack((vstarstar[:, -2:].reshape((ny, 2)), vstarstar[:, 0].reshape((ny, 1))))
-    prhs[:, -1] = (rho * derive.div(utemp, vtemp, dx, dy) / dt)[:, 1]
-
-    # periodic condition at x=0
-    utemp = np.hstack((ustarstar[:, -1].reshape((ny, 1)), ustarstar[:, :2].reshape((ny, 2))))
-    vtemp = np.hstack((vstarstar[:, -1].reshape((ny, 1)), vstarstar[:, :2].reshape((ny, 2))))
-    prhs[:, 0] = (rho * derive.div(utemp, vtemp, dx, dy) / dt)[:, 1]
-
-    # p, err = pressure_poisson.solve_new(p, dx, dy, prhs)
-
-    p = pressure_poisson.solve_spectral(nx_sp, ny_sp, K, prhs)
+    p = projection_method.step3(ustarstar, vstarstar, rho, epsilon, dx, dy, nx, ny, nx_sp, ny_sp, K, dt)
 
     # Step4
-    # finally compute the true velocities
-    # u_{n+1} = uh - dt*dpdx
-    dpdx = derive.ddx(p, dx)
-
-    # periodic condition at x=lx
-    ptemp = np.hstack((p[:, -2:].reshape((ny, 2)), p[:, 0].reshape((ny, 1))))
-    dpdx[:, -1] = derive.ddx(ptemp, dx)[:, 1]
-
-    # periodic condition at x=0
-    ptemp = np.hstack((p[:, -1].reshape((ny, 1)), p[:, :2].reshape((ny, 2))))
-    dpdx[:, 0] = derive.ddx(ptemp, dx)[:, 1]
-
-    dpdy = derive.ddy(p, dy)
-
-    u = ustarstar - dt * dpdx
-    v = vstarstar - dt * dpdy
+    u, v, dpdx, dpdy = projection_method.step4(ustarstar, vstarstar, p, dx, dy, nx, ny, dt)
 
     if np.mod(stepcount, saveth_iter) == 0:
         ip_op.write_szl_2D(xx, yy, p, u, v, stepcount * dt, int(stepcount / saveth_iter))
