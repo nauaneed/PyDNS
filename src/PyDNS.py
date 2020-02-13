@@ -1,10 +1,7 @@
 def PyDNS():
     import numpy as np
     from matplotlib import pyplot
-    from src import pressure_poisson, integrate, projection_method
-    from src import derive
-    from src import ip_op
-    from scipy import interpolate
+    from src import integrate, projection_method, ip_op
 
     ##variable declarations
     nx = 256
