@@ -13,13 +13,13 @@ def PyDNS():
     x = np.linspace(0, lx, nx)
     y = np.linspace(0, ly, ny)
     xx, yy = np.meshgrid(x, y)
-    nt = 40000
+    nt = 80000
     saveth_iter = 200
 
     ##physical variables
     rho = 1
-    nu = 1/150
-    F = 0.01
+    nu = 1 / 200
+    F = 0.002
     dt = .002
 
     # boundary conditions
@@ -46,7 +46,7 @@ def PyDNS():
     r = ((xx - lx / 4) ** 2 + (yy - ly / 2) ** 2) ** 0.5
     theta = np.arctan2(yy - ly / 2, xx - lx / 4)
 
-    R = 1
+    R = 0.5
 
     for i in range(nx):
         for j in range(ny):
@@ -71,7 +71,7 @@ def PyDNS():
         u, v, dpdx, dpdy, uRHS_conv_diff, vRHS_conv_diff = integrate.rk3(u, v, nx, ny, nu, dx, dy, dt, dpdx, dpdy,
                                                                          epsilon, F, theta, r, R,
                                                                          rho, stepcount, saveth_iter, x, y, xx, yy,
-                                                                         nx_sp, ny_sp, K)
+                                                                         nx_sp, ny_sp, K,bc)
 
         uRHS_conv_diff_pp = uRHS_conv_diff_p.copy()
         vRHS_conv_diff_pp = vRHS_conv_diff_p.copy()
@@ -85,16 +85,16 @@ def PyDNS():
                                                                                dt, epsilon, F, R, theta, r,
                                                                                uRHS_conv_diff_p, uRHS_conv_diff_pp,
                                                                                vRHS_conv_diff_p, vRHS_conv_diff_pp,
-                                                                               dpdx, dpdy,bc)
+                                                                               dpdx, dpdy, bc)
 
         # Step2
         ustarstar, vstarstar = projection_method.step2(ustar, vstar, dpdx, dpdy, dt)
 
         # Step3
-        p = projection_method.step3(ustarstar, vstarstar, rho, epsilon, dx, dy, nx, ny, nx_sp, ny_sp, K, dt)
+        p = projection_method.step3(ustarstar, vstarstar, rho, epsilon, dx, dy, nx_sp, ny_sp, K, dt, bc)
 
         # Step4
-        u, v, dpdx, dpdy = projection_method.step4(ustarstar, vstarstar, p, dx, dy, nx, ny, dt)
+        u, v, dpdx, dpdy = projection_method.step4(ustarstar, vstarstar, p, dx, dy, dt, bc)
 
         if np.mod(stepcount, saveth_iter) == 0:
             ip_op.write_szl_2D(xx, yy, p, u, v, stepcount * dt, int(stepcount / saveth_iter))

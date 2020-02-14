@@ -5,6 +5,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PyDNS.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/PyDNS.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/derive.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/derive.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/integrate.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/integrate.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/projection_method.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/projection_method.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -94,25 +95,25 @@
       <screen x="0" y="0" width="1920" height="1164" />
     </state>
     <state x="743" y="340" width="424" height="491" key="FileChooserDialogImpl/0.0.1920.1164@0.0.1920.1164" timestamp="1581348334599" />
-    <state width="1899" height="264" key="GridCell.Tab.0.bottom" timestamp="1581660830802">
+    <state width="1899" height="264" key="GridCell.Tab.0.bottom" timestamp="1581706252159">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="1899" height="264" key="GridCell.Tab.0.bottom/0.0.1920.1048@0.0.1920.1048" timestamp="1581660830802" />
+    <state width="1899" height="264" key="GridCell.Tab.0.bottom/0.0.1920.1048@0.0.1920.1048" timestamp="1581706252159" />
     <state width="948" height="312" key="GridCell.Tab.0.bottom/0.0.1920.1164@0.0.1920.1164" timestamp="1581361886203" />
-    <state width="1899" height="264" key="GridCell.Tab.0.center" timestamp="1581660830802">
+    <state width="1899" height="264" key="GridCell.Tab.0.center" timestamp="1581706252159">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="1899" height="264" key="GridCell.Tab.0.center/0.0.1920.1048@0.0.1920.1048" timestamp="1581660830802" />
+    <state width="1899" height="264" key="GridCell.Tab.0.center/0.0.1920.1048@0.0.1920.1048" timestamp="1581706252159" />
     <state width="948" height="312" key="GridCell.Tab.0.center/0.0.1920.1164@0.0.1920.1164" timestamp="1581361886203" />
-    <state width="1899" height="264" key="GridCell.Tab.0.left" timestamp="1581660830802">
+    <state width="1899" height="264" key="GridCell.Tab.0.left" timestamp="1581706252159">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="1899" height="264" key="GridCell.Tab.0.left/0.0.1920.1048@0.0.1920.1048" timestamp="1581660830802" />
+    <state width="1899" height="264" key="GridCell.Tab.0.left/0.0.1920.1048@0.0.1920.1048" timestamp="1581706252159" />
     <state width="948" height="312" key="GridCell.Tab.0.left/0.0.1920.1164@0.0.1920.1164" timestamp="1581361886203" />
-    <state width="1899" height="264" key="GridCell.Tab.0.right" timestamp="1581660830802">
+    <state width="1899" height="264" key="GridCell.Tab.0.right" timestamp="1581706252159">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="1899" height="264" key="GridCell.Tab.0.right/0.0.1920.1048@0.0.1920.1048" timestamp="1581660830802" />
+    <state width="1899" height="264" key="GridCell.Tab.0.right/0.0.1920.1048@0.0.1920.1048" timestamp="1581706252159" />
     <state width="948" height="312" key="GridCell.Tab.0.right/0.0.1920.1164@0.0.1920.1164" timestamp="1581361886203" />
     <state width="1899" height="340" key="GridCell.Tab.1.bottom" timestamp="1581660736515">
       <screen x="0" y="0" width="1920" height="1048" />
@@ -158,18 +159,8 @@
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/integrate.py</url>
-          <line>7</line>
-          <option name="timeStamp" value="21" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/integrate.py</url>
-          <line>140</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/derive.py</url>
-          <line>35</line>
+          <line>19</line>
           <option name="timeStamp" value="25" />
         </line-breakpoint>
       </breakpoints>
