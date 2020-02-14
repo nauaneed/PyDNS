@@ -17,20 +17,6 @@ def rk3(u, v, nx, ny, nu, dx, dy, dt, dpdx, dpdy, epsilon, F, theta, r, R, rho, 
     k1_u = - u * derive.ddx_bwd(u, dx) - v * derive.ddy_bwd(u, dy) + nu * derive.laplacian(u, dx, dy)
     k1_v = - u * derive.ddx_bwd(v, dx) - v * derive.ddy_bwd(v, dy) + nu * derive.laplacian(v, dx, dy)
 
-    # periodic condition at x=lx
-    utemp = np.hstack((u[:, -2:].reshape((ny, 2)), u[:, 0].reshape((ny, 1))))
-    vtemp = np.hstack((v[:, -2:].reshape((ny, 2)), v[:, 0].reshape((ny, 1))))
-    k1_u[:, -1] = (- u * derive.ddx_bwd(u, dx) - v * derive.ddy_bwd(u, dy) + nu * derive.laplacian(
-        u, dx, dy))[:, 1]
-    k1_v[:, -1] = (- u * derive.ddx_bwd(v, dx) - v * derive.ddy_bwd(v, dy) + nu * derive.laplacian(
-        v, dx, dy))[:, 1]
-    # periodic condition at x=0
-    utemp = np.hstack((u[:, -1].reshape((ny, 1)), u[:, :2].reshape((ny, 2))))
-    vtemp = np.hstack((v[:, -1].reshape((ny, 1)), v[:, :2].reshape((ny, 2))))
-    k1_u[:, 0] = (- u * derive.ddx_bwd(u, dx) - v * derive.ddy_bwd(u, dy) + nu * derive.laplacian(u, dx, dy)
-                  - dpdx)[:, 1]
-    k1_v[:, 0] = (- u * derive.ddx_bwd(v, dx) - v * derive.ddy_bwd(v, dy) + nu * derive.laplacian(v, dx, dy)
-                  - dpdy)[:, 1]
 
     t = t + 0.5 * dt
 
@@ -41,28 +27,6 @@ def rk3(u, v, nx, ny, nu, dx, dy, dt, dpdx, dpdy, epsilon, F, theta, r, R, rho, 
             v + 0.5 * k1_v * dt) * derive.ddy_bwd((v + 0.5 * k1_v * dt), dy) + nu * derive.laplacian(
         (v + 0.5 * k1_v * dt), dx, dy)
 
-    # periodic condition at x=lx
-    utemp = np.hstack(
-        ((u + 0.5 * k1_u * dt)[:, -2:].reshape((ny, 2)), (u + 0.5 * k1_u * dt)[:, 0].reshape((ny, 1))))
-    vtemp = np.hstack(
-        ((v + 0.5 * k1_v * dt)[:, -2:].reshape((ny, 2)), (v + 0.5 * k1_v * dt)[:, 0].reshape((ny, 1))))
-    k2_u[:, -1] = (- (u + 0.5 * k1_u * dt) * derive.ddx_bwd((u + 0.5 * k1_u * dt), dx) - (
-            v + 0.5 * k1_v * dt) * derive.ddy_bwd((u + 0.5 * k1_u * dt), dy) + nu * derive.laplacian(
-        (u + 0.5 * k1_u * dt), dx, dy))[:, 1]
-    k2_v[:, -1] = (- (u + 0.5 * k1_u * dt) * derive.ddx_bwd((v + 0.5 * k1_v * dt), dx) - (
-            v + 0.5 * k1_v * dt) * derive.ddy_bwd((v + 0.5 * k1_v * dt), dy) + nu * derive.laplacian(
-        (v + 0.5 * k1_v * dt), dx, dy))[:, 1]
-    # periodic condition at x=0
-    utemp = np.hstack(
-        ((u + 0.5 * k1_u * dt)[:, -1].reshape((ny, 1)), (u + 0.5 * k1_u * dt)[:, :2].reshape((ny, 2))))
-    vtemp = np.hstack(
-        ((v + 0.5 * k1_v * dt)[:, -1].reshape((ny, 1)), (v + 0.5 * k1_v * dt)[:, :2].reshape((ny, 2))))
-    k2_u[:, 0] = (- (u + 0.5 * k1_u * dt) * derive.ddx_bwd((u + 0.5 * k1_u * dt), dx) - (
-            v + 0.5 * k1_v * dt) * derive.ddy_bwd((u + 0.5 * k1_u * dt), dy) + nu * derive.laplacian(
-        (u + 0.5 * k1_u * dt), dx, dy) - dpdx)[:, 1]
-    k2_v[:, 0] = (- (u + 0.5 * k1_u * dt) * derive.ddx_bwd((v + 0.5 * k1_v * dt), dx) - (
-            v + 0.5 * k1_v * dt) * derive.ddy_bwd((v + 0.5 * k1_v * dt), dy) + nu * derive.laplacian(
-        (v + 0.5 * k1_v * dt), dx, dy) - dpdy)[:, 1]
 
     t = t + 0.5 * dt
     k3_u = - (u - k1_u * dt + 2 * k2_u * dt) * derive.ddx_bwd((u - k1_u * dt + 2 * k2_u * dt), dx) - (
@@ -74,36 +38,6 @@ def rk3(u, v, nx, ny, nu, dx, dy, dt, dpdx, dpdy, epsilon, F, theta, r, R, rho, 
                                                             dy) + nu * derive.laplacian(
         (v - k1_v * dt + 2 * k2_v * dt), dx, dy)
 
-    # periodic condition at x=lx
-    utemp = np.hstack(((u - k1_u * dt + 2 * k2_u * dt)[:, -2:].reshape((ny, 2)),
-                       (u - k1_u * dt + 2 * k2_u * dt)[:, 0].reshape((ny, 1))))
-    vtemp = np.hstack(((v - k1_v * dt + 2 * k2_v * dt)[:, -2:].reshape((ny, 2)),
-                       (v - k1_v * dt + 2 * k2_v * dt)[:, 0].reshape((ny, 1))))
-    k3_u[:, -1] = (- (u - k1_u * dt + 2 * k2_u * dt) * derive.ddx_bwd((u - k1_u * dt + 2 * k2_u * dt),
-                                                                      dx) - (
-                           v - k1_v * dt + 2 * k2_v * dt) * derive.ddy_bwd(
-        (u - k1_u * dt + 2 * k2_u * dt), dy) + nu * derive.laplacian((u - k1_u * dt + 2 * k2_u * dt), dx, dy))[:,
-                  1]
-    k3_v[:, -1] = (- (u - k1_u * dt + 2 * k2_u * dt) * derive.ddx_bwd((v - k1_v * dt + 2 * k2_v * dt),
-                                                                      dx) - (
-                           v - k1_v * dt + 2 * k2_v * dt) * derive.ddy_bwd(
-        (v - k1_v * dt + 2 * k2_v * dt), dy) + nu * derive.laplacian((v - k1_v * dt + 2 * k2_v * dt), dx, dy))[:,
-                  1]
-    # periodic condition at x=0
-    utemp = np.hstack(((u - k1_u * dt + 2 * k2_u * dt)[:, -1].reshape((ny, 1)),
-                       (u - k1_u * dt + 2 * k2_u * dt)[:, :2].reshape((ny, 2))))
-    vtemp = np.hstack(((v - k1_v * dt + 2 * k2_v * dt)[:, -1].reshape((ny, 1)),
-                       (v - k1_v * dt + 2 * k2_v * dt)[:, :2].reshape((ny, 2))))
-    k3_u[:, 0] = (- (u - k1_u * dt + 2 * k2_u * dt) * derive.ddx_bwd((u - k1_u * dt + 2 * k2_u * dt),
-                                                                     dx) - (
-                          v - k1_v * dt + 2 * k2_v * dt) * derive.ddy_bwd(
-        (u - k1_u * dt + 2 * k2_u * dt), dy) + nu * derive.laplacian((u - k1_u * dt + 2 * k2_u * dt), dx,
-                                                                     dy) - dpdx)[:, 1]
-    k3_v[:, 0] = (- (u - k1_u * dt + 2 * k2_u * dt) * derive.ddx_bwd((v - k1_v * dt + 2 * k2_v * dt),
-                                                                     dx) - (
-                          v - k1_v * dt + 2 * k2_v * dt) * derive.ddy_bwd(
-        (v - k1_v * dt + 2 * k2_v * dt), dy) + nu * derive.laplacian((v - k1_v * dt + 2 * k2_v * dt), dx,
-                                                                     dy) - dpdy)[:, 1]
 
     uRHS_conv_diff = 1 / 6 * (k1_u + 4 * k2_u + k3_u)
 

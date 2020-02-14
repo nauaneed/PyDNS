@@ -22,6 +22,9 @@ def PyDNS():
     F = 0.5
     dt = .001
 
+    # boundary conditions
+    bc = {'x': 'wall', 'y': 'periodic'}
+
     # initial conditions
     u = np.ones((ny, nx))
     utemp = np.zeros((ny, 3))
@@ -82,16 +85,16 @@ def PyDNS():
                                                                                dt, epsilon, F, R, theta, r,
                                                                                uRHS_conv_diff_p, uRHS_conv_diff_pp,
                                                                                vRHS_conv_diff_p, vRHS_conv_diff_pp,
-                                                                               dpdx, dpdy)
+                                                                               dpdx, dpdy,bc)
 
         # Step2
-        ustarstar, vstarstar=projection_method.step2(ustar, vstar, dpdx, dpdy, dt)
+        ustarstar, vstarstar = projection_method.step2(ustar, vstar, dpdx, dpdy, dt)
 
         # Step3
-        p=projection_method.step3(ustarstar, vstarstar, rho, epsilon, dx, dy, nx, ny, nx_sp, ny_sp, K, dt)
+        p = projection_method.step3(ustarstar, vstarstar, rho, epsilon, dx, dy, nx, ny, nx_sp, ny_sp, K, dt)
 
         # Step4
-        u, v, dpdx, dpdy=projection_method.step4(ustarstar, vstarstar, p, dx, dy, nx, ny, dt)
+        u, v, dpdx, dpdy = projection_method.step4(ustarstar, vstarstar, p, dx, dy, nx, ny, dt)
 
         if np.mod(stepcount, saveth_iter) == 0:
             ip_op.write_szl_2D(xx, yy, p, u, v, stepcount * dt, int(stepcount / saveth_iter))
@@ -113,6 +116,7 @@ def PyDNS():
         
         pyplot.show()
         '''
+
 
 if __name__ == "__main__":
     import os
