@@ -6,24 +6,24 @@ def PyDNS():
     ##variable declarations
     nx = 256
     ny = 128
-    lx = 40
-    ly = 20
+    lx = 20
+    ly = 12
     dx = lx / (nx - 1)
     dy = ly / (ny - 1)
     x = np.linspace(0, lx, nx)
     y = np.linspace(0, ly, ny)
     xx, yy = np.meshgrid(x, y)
-    nt = 300
-    saveth_iter = 20
+    nt = 40000
+    saveth_iter = 200
 
     ##physical variables
     rho = 1
-    nu = .5
-    F = 0.5
-    dt = .001
+    nu = 1/150
+    F = 0.01
+    dt = .002
 
     # boundary conditions
-    bc = {'x': 'wall', 'y': 'periodic'}
+    bc = {'x': 'periodic', 'y': 'wall'}
 
     # initial conditions
     u = np.ones((ny, nx))

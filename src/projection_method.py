@@ -12,9 +12,9 @@ def step1(u, v, nx, ny, nu, x, y, xx, yy, dx, dy, dt, epsilon, F, R, theta, r, u
     # Step1
     # do the x-momentum RHS
     # u rhs: - d(uu)/dx - d(vu)/dy + ν d2(u)
-    uRHS_conv_diff = - u * derive.ddx_bwd(u, dx) - v * derive.ddy_bwd(u, dy) + nu * derive.laplacian(u, dx, dy)
+    uRHS_conv_diff = - derive.ddx(u*u,dx) - derive.ddy(v*u,dy) + nu*derive.laplacian(u,dx,dy)
     # v rhs: - d(uv)/dx - d(vv)/dy + ν d2(v)
-    vRHS_conv_diff = - u * derive.ddx_bwd(v, dx) - v * derive.ddy_bwd(v, dy) + nu * derive.laplacian(v, dx, dy)
+    vRHS_conv_diff = - derive.ddx(u*v,dx) - derive.ddy(v*v,dy) + nu*derive.laplacian(v,dx,dy)
 
     uRHS = (23 * uRHS_conv_diff - 16 * uRHS_conv_diff_p + 5 * uRHS_conv_diff_pp) / 12 - dpdx
 
