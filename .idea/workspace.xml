@@ -135,11 +135,12 @@
     </state>
     <state width="1899" height="340" key="GridCell.Tab.1.right/0.0.1920.1048@0.0.1920.1048" timestamp="1581660736514" />
     <state width="948" height="384" key="GridCell.Tab.1.right/0.0.1920.1164@0.0.1920.1164" timestamp="1581361847772" />
-    <state x="449" y="195" width="1022" height="737" key="SettingsEditor" timestamp="1581515242017">
-      <screen x="0" y="0" width="1920" height="1048" />
+    <state x="449" y="245" width="1022" height="737" key="SettingsEditor" timestamp="1582047646223">
+      <screen x="0" y="27" width="1920" height="1173" />
     </state>
     <state x="449" y="195" width="1022" height="737" key="SettingsEditor/0.0.1920.1048@0.0.1920.1048" timestamp="1581515242017" />
     <state x="449" y="217" width="1022" height="737" key="SettingsEditor/0.0.1920.1164@0.0.1920.1164" timestamp="1581348416056" />
+    <state x="449" y="245" key="SettingsEditor/0.27.1920.1173@0.27.1920.1173" timestamp="1582047646223" />
     <state x="639" y="351" key="com.intellij.ide.util.TipDialog" timestamp="1581659392496">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>

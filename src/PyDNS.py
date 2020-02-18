@@ -13,14 +13,15 @@ def PyDNS():
     x = np.linspace(0, lx, nx)
     y = np.linspace(0, ly, ny)
     xx, yy = np.meshgrid(x, y)
-    nt = 80000
-    saveth_iter = 200
+    nt = 240000
+    saveth_iter = 300
+    save_start=130000
 
     ##physical variables
     rho = 1
-    nu = 1 / 200
+    nu = 1 / 150
     F = 0.002
-    dt = .002
+    dt = .0015
 
     # boundary conditions
     bc = {'x': 'periodic', 'y': 'wall'}
@@ -96,7 +97,7 @@ def PyDNS():
         # Step4
         u, v, dpdx, dpdy = projection_method.step4(ustarstar, vstarstar, p, dx, dy, dt, bc)
 
-        if np.mod(stepcount, saveth_iter) == 0:
+        if (np.mod(stepcount, saveth_iter) == 0) and (stepcount>save_start):
             ip_op.write_szl_2D(xx, yy, p, u, v, stepcount * dt, int(stepcount / saveth_iter))
 
         print(stepcount)
