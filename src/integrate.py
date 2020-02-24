@@ -35,9 +35,9 @@ def rk3(u, v, nx, ny, nu, dx, dy, dt, dpdx, dpdy, epsilon, F, theta, r, R, rho, 
         ustar[-1, :] = 0
         vstar[0, :] = 0
         vstar[-1, :] = 0
-
+    # try yibao2017
     if bc['x']=='dirichlet':
-        ustar[:, -1] = u[:, -1]-1*(u[:, -1]-u[:, -2])/dx
+        ustar[:, -1] = u[:, -1]-(u[:, -1]*u[:, -1]-u[:, -2]*u[:, -2])/dx
 
     # Step2
     ustarstar, vstarstar = projection_method.step2(ustar, vstar, dpdx, dpdy, dt)
