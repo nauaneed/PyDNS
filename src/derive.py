@@ -3,7 +3,7 @@ import numpy as np
 
 def ddx(f, dx, bc):
     result = np.zeros_like(f)
-    result[:, 1:-1] = (f[:, 2:] - f[:, :-2]) / 2.0 / dx
+    result[1:-1, 1:-1] = (f[1:-1, 2:] - f[1:-1, :-2]) / 2.0 / dx
     if bc['x'] == 'periodic':
         result[:, -1] = (f[:, 0] - f[:, -2]) / 2.0 / dx
         result[:, 0] = (f[:, 1] - f[:, -1]) / 2.0 / dx
@@ -12,7 +12,7 @@ def ddx(f, dx, bc):
 
 def ddy(f, dy, bc):
     result = np.zeros_like(f)
-    result[1:-1, :] = (f[2:, :] - f[:-2, :]) / 2.0 / dy
+    result[1:-1,1 :-1] = (f[2:, 1:-1] - f[:-2, 1:-1]) / 2.0 / dy
     return result
 
 

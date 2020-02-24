@@ -35,6 +35,12 @@ def rk3(u, v, nx, ny, nu, dx, dy, dt, dpdx, dpdy, epsilon, F, theta, r, R, rho, 
     vstar[0, :] = 0
     vstar[-1, :] = 0
 
+    if bc['y'] == 'free-slip':
+        ustar[0, :] = ustar[1, :].copy()
+        ustar[-1, :] = ustar[-2, :].copy()
+        v[0, :] = 0
+        v[-1, :] = 0
+
     # Step2
     ustarstar, vstarstar = projection_method.step2(ustar, vstar, dpdx, dpdy, dt)
 
