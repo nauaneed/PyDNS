@@ -26,6 +26,11 @@ def step1(u, v, nx, ny, nu, x, y, xx, yy, dx, dy, dt, epsilon, F, R, theta, r, u
         ustar[-1, :] = 0
         vstar[0, :] = 0
         vstar[-1, :] = 0
+    elif bc['y'] == 'free-slip':
+        ustar[0, :] = ustar[1, :].copy()
+        ustar[-1, :] = ustar[-2, :].copy()
+        v[0, :] = 0
+        v[-1, :] = 0
 
     return ustar, vstar, uRHS_conv_diff, vRHS_conv_diff
 

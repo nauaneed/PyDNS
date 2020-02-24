@@ -13,7 +13,7 @@ def PyDNS():
     x = np.linspace(0, lx, nx)
     y = np.linspace(0, ly, ny)
     xx, yy = np.meshgrid(x, y)
-    nt = 240000
+    nt = 220000
     saveth_iter = 300
     save_start = 130000
 
@@ -24,7 +24,7 @@ def PyDNS():
     dt = .0015
 
     # boundary conditions
-    bc = {'x': 'periodic', 'y': 'no-slip'}
+    bc = {'x': 'periodic', 'y': 'free-slip'}
 
     # initial conditions
     u = np.ones((ny, nx))
@@ -112,6 +112,12 @@ def PyDNS():
 
         # Step4
         u, v, dpdx, dpdy = projection_method.step4(ustarstar, vstarstar, p, dx, dy, dt, bc)
+
+        if bc['y'] == 'free-slip':
+            u[0, :] = u[1, :].copy()
+            u[-1, :] = u[-2, :].copy()
+            v[0, :] = 0
+            v[-1, :] = 0
 
         print("Step=%06i time=%4.6f" % (stepcount, stepcount * dt))
 

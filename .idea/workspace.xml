@@ -4,7 +4,6 @@
     <list default="true" id="5988ca98-b665-41da-a57d-f7ef0f80da0f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PyDNS.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/PyDNS.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/derive.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/derive.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/integrate.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/integrate.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/projection_method.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/projection_method.py" afterDir="false" />
     </list>
@@ -96,25 +95,25 @@
     </state>
     <state x="743" y="306" key="FileChooserDialogImpl/0.0.1920.1048@0.0.1920.1048" timestamp="1582533317139" />
     <state x="743" y="340" width="424" height="491" key="FileChooserDialogImpl/0.0.1920.1164@0.0.1920.1164" timestamp="1581348334599" />
-    <state width="1899" height="264" key="GridCell.Tab.0.bottom" timestamp="1582540112039">
+    <state width="1899" height="264" key="GridCell.Tab.0.bottom" timestamp="1582552263950">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="1899" height="264" key="GridCell.Tab.0.bottom/0.0.1920.1048@0.0.1920.1048" timestamp="1582540112039" />
+    <state width="1899" height="264" key="GridCell.Tab.0.bottom/0.0.1920.1048@0.0.1920.1048" timestamp="1582552263950" />
     <state width="948" height="312" key="GridCell.Tab.0.bottom/0.0.1920.1164@0.0.1920.1164" timestamp="1581361886203" />
-    <state width="1899" height="264" key="GridCell.Tab.0.center" timestamp="1582540112039">
+    <state width="1899" height="264" key="GridCell.Tab.0.center" timestamp="1582552263949">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="1899" height="264" key="GridCell.Tab.0.center/0.0.1920.1048@0.0.1920.1048" timestamp="1582540112039" />
+    <state width="1899" height="264" key="GridCell.Tab.0.center/0.0.1920.1048@0.0.1920.1048" timestamp="1582552263949" />
     <state width="948" height="312" key="GridCell.Tab.0.center/0.0.1920.1164@0.0.1920.1164" timestamp="1581361886203" />
-    <state width="1899" height="264" key="GridCell.Tab.0.left" timestamp="1582540112039">
+    <state width="1899" height="264" key="GridCell.Tab.0.left" timestamp="1582552263949">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="1899" height="264" key="GridCell.Tab.0.left/0.0.1920.1048@0.0.1920.1048" timestamp="1582540112039" />
+    <state width="1899" height="264" key="GridCell.Tab.0.left/0.0.1920.1048@0.0.1920.1048" timestamp="1582552263949" />
     <state width="948" height="312" key="GridCell.Tab.0.left/0.0.1920.1164@0.0.1920.1164" timestamp="1581361886203" />
-    <state width="1899" height="264" key="GridCell.Tab.0.right" timestamp="1582540112039">
+    <state width="1899" height="264" key="GridCell.Tab.0.right" timestamp="1582552263949">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="1899" height="264" key="GridCell.Tab.0.right/0.0.1920.1048@0.0.1920.1048" timestamp="1582540112039" />
+    <state width="1899" height="264" key="GridCell.Tab.0.right/0.0.1920.1048@0.0.1920.1048" timestamp="1582552263949" />
     <state width="948" height="312" key="GridCell.Tab.0.right/0.0.1920.1164@0.0.1920.1164" timestamp="1581361886203" />
     <state width="1899" height="340" key="GridCell.Tab.1.bottom" timestamp="1582533602649">
       <screen x="0" y="0" width="1920" height="1048" />
@@ -152,7 +151,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/PyDNS.py</url>
-          <line>128</line>
+          <line>134</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
