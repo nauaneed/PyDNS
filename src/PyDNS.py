@@ -13,9 +13,10 @@ def PyDNS():
     x = np.linspace(0, lx, nx)
     y = np.linspace(0, ly, ny)
     xx, yy = np.meshgrid(x, y)
-    nt = 220000
+    #nt = 220000
+    nt = 3000
     saveth_iter = 300
-    save_start = 130000
+    save_start = 1
 
     ##physical variables
     rho = 1
@@ -88,7 +89,7 @@ def PyDNS():
 
         ip_mdot = dy * ((u[0, 0] + u[-1, 0]) / 2 + sum(u[1:-1, 0]))
         op_mdot = dy * ((u[0, -1] + u[-1, -1]) / 2 + sum(u[1:-1, -1]))
-        print("mass flow rate ip op diff: %f %f %f" % (ip_mdot, op_mdot, op_mdot-ip_mdot))
+        print("mass flow rate ip op diff: %f %f %e" % (ip_mdot, op_mdot, op_mdot-ip_mdot))
 
         uRHS_conv_diff_pp = uRHS_conv_diff_p.copy()
         vRHS_conv_diff_pp = vRHS_conv_diff_p.copy()
@@ -127,7 +128,7 @@ def PyDNS():
 
         ip_mdot = dy * ((u[0, 0] + u[-1, 0]) / 2 + sum(u[1:-1, 0]))
         op_mdot = dy * ((u[0, -1] + u[-1, -1]) / 2 + sum(u[1:-1, -1]))
-        print("mass flow rate ip op diff: %f %f %f" % (ip_mdot, op_mdot, op_mdot-ip_mdot))
+        print("mass flow rate ip op diff: %f %f %e" % (ip_mdot, op_mdot, op_mdot-ip_mdot))
 
 
         uRHS_conv_diff_pp = uRHS_conv_diff_p.copy()
