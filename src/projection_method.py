@@ -27,6 +27,10 @@ def step1(u, v, nx, ny, nu, x, y, xx, yy, dx, dy, dt, epsilon, F, R, theta, r, u
         vstar[0, :] = 0
         vstar[-1, :] = 0
 
+    if bc['x']=='dirichlet':
+        ustar[:, -1] = u[:, -1]+1*(u[:, -1]-u[:, -2])/dx
+
+
     return ustar, vstar, uRHS_conv_diff, vRHS_conv_diff
 
 

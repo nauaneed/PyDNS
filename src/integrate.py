@@ -30,10 +30,12 @@ def rk3(u, v, nx, ny, nu, dx, dy, dt, dpdx, dpdy, epsilon, F, theta, r, R, rho, 
     ustar = u + dt * uRHS + F * dt + ibm_forcing_u * dt
     vstar = v + dt * vRHS + ibm_forcing_v * dt
 
-    ustar[0, :] = 0
-    ustar[-1, :] = 0
-    vstar[0, :] = 0
-    vstar[-1, :] = 0
+    if bc['y']=='no-slip':
+        ustar[0, :] = 0
+        ustar[-1, :] = 0
+        vstar[0, :] = 0
+        vstar[-1, :] = 0
+
 
     # Step2
     ustarstar, vstarstar = projection_method.step2(ustar, vstar, dpdx, dpdy, dt)
