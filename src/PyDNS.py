@@ -15,7 +15,7 @@ def PyDNS():
     xx, yy = np.meshgrid(x, y)
     nt = 240000
     saveth_iter = 300
-    save_start=130000
+    save_start = 130000
 
     ##physical variables
     rho = 1
@@ -72,7 +72,17 @@ def PyDNS():
         u, v, dpdx, dpdy, uRHS_conv_diff, vRHS_conv_diff = integrate.rk3(u, v, nx, ny, nu, dx, dy, dt, dpdx, dpdy,
                                                                          epsilon, F, theta, r, R,
                                                                          rho, stepcount, saveth_iter, x, y, xx, yy,
-                                                                         nx_sp, ny_sp, K,bc)
+                                                                         nx_sp, ny_sp, K, bc)
+
+        print("Step=%06i time=%4.6f" % (stepcount, stepcount * dt))
+
+        if (np.mod(stepcount, saveth_iter) == 0) and (stepcount > save_start):
+            print("snapshot= %i" % (stepcount / saveth_iter))
+            ip_op.write_szl_2D(xx, yy, p, u, v, stepcount * dt, int(stepcount / saveth_iter))
+
+        ip_mdot = dy * ((u[0, 0] + u[-1, 0]) / 2 + sum(u[1:-1, 0]))
+        op_mdot = dy * ((u[0, -1] + u[-1, -1]) / 2 + sum(u[1:-1, -1]))
+        print("mass flow rate ip op diff: %f %f %f" % (ip_mdot, op_mdot, op_mdot-ip_mdot))
 
         uRHS_conv_diff_pp = uRHS_conv_diff_p.copy()
         vRHS_conv_diff_pp = vRHS_conv_diff_p.copy()
@@ -97,10 +107,16 @@ def PyDNS():
         # Step4
         u, v, dpdx, dpdy = projection_method.step4(ustarstar, vstarstar, p, dx, dy, dt, bc)
 
-        if (np.mod(stepcount, saveth_iter) == 0) and (stepcount>save_start):
+        print("Step=%06i time=%4.6f" % (stepcount, stepcount * dt))
+
+        if (np.mod(stepcount, saveth_iter) == 0) and (stepcount > save_start):
+            print("snapshot= %i" % (stepcount / saveth_iter))
             ip_op.write_szl_2D(xx, yy, p, u, v, stepcount * dt, int(stepcount / saveth_iter))
 
-        print(stepcount)
+        ip_mdot = dy * ((u[0, 0] + u[-1, 0]) / 2 + sum(u[1:-1, 0]))
+        op_mdot = dy * ((u[0, -1] + u[-1, -1]) / 2 + sum(u[1:-1, -1]))
+        print("mass flow rate ip op diff: %f %f %f" % (ip_mdot, op_mdot, op_mdot-ip_mdot))
+
 
         uRHS_conv_diff_pp = uRHS_conv_diff_p.copy()
         vRHS_conv_diff_pp = vRHS_conv_diff_p.copy()

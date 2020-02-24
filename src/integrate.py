@@ -47,9 +47,4 @@ def rk3(u, v, nx, ny, nu, dx, dy, dt, dpdx, dpdy, epsilon, F, theta, r, R, rho, 
     # Step4
     u, v, dpdx, dpdy = projection_method.step4(ustarstar, vstarstar, p, dx, dy, dt, bc)
 
-    if np.mod(stepcount, saveth_iter) == 0:
-        ip_op.write_szl_2D(xx, yy, p, u, v, stepcount * dt, int(stepcount / saveth_iter))
-
-    print(stepcount)
-
     return u, v, dpdx, dpdy, uRHS_conv_diff, vRHS_conv_diff
