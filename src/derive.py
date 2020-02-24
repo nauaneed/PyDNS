@@ -17,7 +17,6 @@ def ddy(f, dy, bc):
 
 
 def laplacian(f, dx, dy, bc):
-    bc = {'x': 'periodic', 'y': 'periodic'}
     result = np.zeros_like(f)
     result[1:-1, 1:-1] = (f[1:-1, 2:] - 2.0 * f[1:-1, 1:-1] + f[1:-1, :-2]) / dx / dx \
                          + (f[2:, 1:-1] - 2.0 * f[1:-1, 1:-1] + f[:-2, 1:-1]) / dy / dy

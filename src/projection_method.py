@@ -21,10 +21,11 @@ def step1(u, v, nx, ny, nu, x, y, xx, yy, dx, dy, dt, epsilon, F, R, theta, r, u
     ustar = u + dt * uRHS + F * dt + ibm_forcing_u * dt
     vstar = v + dt * vRHS + ibm_forcing_v * dt
 
-    ustar[0, :] = 0
-    ustar[-1, :] = 0
-    vstar[0, :] = 0
-    vstar[-1, :] = 0
+    if bc['y']=='no-slip':
+        ustar[0, :] = 0
+        ustar[-1, :] = 0
+        vstar[0, :] = 0
+        vstar[-1, :] = 0
 
     return ustar, vstar, uRHS_conv_diff, vRHS_conv_diff
 

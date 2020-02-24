@@ -24,7 +24,7 @@ def PyDNS():
     dt = .0015
 
     # boundary conditions
-    bc = {'x': 'periodic', 'y': 'wall'}
+    bc = {'x': 'periodic', 'y': 'no-slip'}
 
     # initial conditions
     u = np.ones((ny, nx))
@@ -32,6 +32,12 @@ def PyDNS():
 
     v = np.zeros((ny, nx))
     vtemp = np.zeros((ny, 3))
+
+    if bc['y']=='no-slip':
+        u[0, :] = 0
+        u[-1, :] = 0
+        v[0, :] = 0
+        v[-1, :] = 0
 
     p = np.zeros((ny, nx))
     ptemp = np.zeros((ny, 3))

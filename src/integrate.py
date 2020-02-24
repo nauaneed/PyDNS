@@ -4,10 +4,7 @@ from src import derive, projection_method, ibm, ip_op
 
 def rk3(u, v, nx, ny, nu, dx, dy, dt, dpdx, dpdy, epsilon, F, theta, r, R, rho, stepcount,
         saveth_iter, x, y, xx, yy, nx_sp, ny_sp, K, bc):
-    u[0, :] = 0
-    u[-1, :] = 0
-    v[0, :] = 0
-    v[-1, :] = 0
+
 
     # Step1 with RK3
     t = 0
