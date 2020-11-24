@@ -1,5 +1,6 @@
 # PyDNS
 Direct Numerical Simulation of Fluid Flow with Direct Forcing IBM Using Python
+(Built upon [CFD Python: 12 steps to Navier-Stokes](https://lorenabarba.com/blog/cfd-python-12-steps-to-navier-stokes))
 
 ## Requisites
 1. Python3
