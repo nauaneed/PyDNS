@@ -1,5 +1,5 @@
 # PyDNS
-Direct Numerical Simulation of Fluid Flow Using Python
+Direct Numerical Simulation of Fluid Flow with Direct Forcing IBM Using Python
 
 ## Requisites
 1. Python3
