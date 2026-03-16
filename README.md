@@ -21,3 +21,5 @@ Recommended Usage with pyenv and venv.
     ```sh
     python -m src.PyDNS
     ```
+
+Snapshots are written to the data directory in Tecplot SZL and legacy VTK formats by default. The output formats can be changed in [src/PyDNS.py](src/PyDNS.py).

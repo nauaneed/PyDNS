@@ -17,6 +17,7 @@ def PyDNS():
     nt = 3000
     saveth_iter = 300
     save_start = 1
+    output_formats = ("szl", "vtk")
 
     ##physical variables
     rho = 1
@@ -71,7 +72,7 @@ def PyDNS():
     KX, KY = np.meshgrid(kx, ky)
     K = KX ** 2 + KY ** 2
 
-    ip_op.write_szl_2D(xx, yy, p, u, v, 0, 0)
+    ip_op.write_snapshot_2D(xx, yy, p, u, v, 0, 0, output_formats)
 
     ## rk3
 
@@ -85,7 +86,7 @@ def PyDNS():
 
         if (np.mod(stepcount, saveth_iter) == 0) and (stepcount > save_start):
             print("snapshot= %i" % (stepcount / saveth_iter))
-            ip_op.write_szl_2D(xx, yy, p, u, v, stepcount * dt, int(stepcount / saveth_iter))
+            ip_op.write_snapshot_2D(xx, yy, p, u, v, stepcount * dt, int(stepcount / saveth_iter), output_formats)
 
         ip_mdot = dy * ((u[0, 0] + u[-1, 0]) / 2 + sum(u[1:-1, 0]))
         op_mdot = dy * ((u[0, -1] + u[-1, -1]) / 2 + sum(u[1:-1, -1]))
@@ -124,7 +125,7 @@ def PyDNS():
 
         if (np.mod(stepcount, saveth_iter) == 0) and (stepcount > save_start):
             print("snapshot= %i" % (stepcount / saveth_iter))
-            ip_op.write_szl_2D(xx, yy, p, u, v, stepcount * dt, int(stepcount / saveth_iter))
+            ip_op.write_snapshot_2D(xx, yy, p, u, v, stepcount * dt, int(stepcount / saveth_iter), output_formats)
 
         ip_mdot = dy * ((u[0, 0] + u[-1, 0]) / 2 + sum(u[1:-1, 0]))
         op_mdot = dy * ((u[0, -1] + u[-1, -1]) / 2 + sum(u[1:-1, -1]))
